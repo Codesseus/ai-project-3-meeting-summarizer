@@ -162,3 +162,4 @@ cython_debug/
 
 # Ignore the test folder
 test/
+*.env
