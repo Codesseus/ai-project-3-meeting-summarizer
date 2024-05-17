@@ -1,6 +1,9 @@
 from dotenv import load_dotenv
 import os
 
+#_CHAT_GPT_VERSION = "gpt-3.5-turbo"
+_CHAT_GPT_VERSION = "gpt-4-turbo"
+
 _DISALLOWED_CHARACTERS = ["/", 
                           "\\", 
                           "\n", 
@@ -8,6 +11,8 @@ _DISALLOWED_CHARACTERS = ["/",
                           "   ",
                           "."]
 
+def get_chat_gpt_version():
+    return _CHAT_GPT_VERSION
 
 def load_chat_gpt_api_enviroment():
     '''

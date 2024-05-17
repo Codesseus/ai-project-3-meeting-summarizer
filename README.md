@@ -7,3 +7,4 @@ test
 
 
 ## Works cited:
+[1]: How to import a module from a different directory. https://www.geeksforgeeks.org/python-import-module-from-different-directory/

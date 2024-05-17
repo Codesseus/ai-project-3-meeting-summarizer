@@ -1,13 +1,13 @@
-from constants import chat_gpt_constants
-from utils import api_utils
-from langchain_openai import ChatOpenAI
-from properties import chat_gpt_properties
+from utils import transcript_utilities
 
-OPENAI_MODEL = chat_gpt_constants.get_chat_gpt_version()
-OPENAI_API_KEY = api_utils.load_chat_gpt_api_enviroment()
-SUMMARY_TEMP = chat_gpt_properties.DEFAULT_TEMPERATURE
- 
-llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model_name=OPENAI_MODEL, temperature=SUMMARY_TEMP)
+import long_summarizer
+import short_summarizer
 
+def create_transcript_summary(transcript):
+    thesis, long_bullet_list, conclusion = long_summarizer.create_long_text_summary(transcript)
 
+    short_bullet_list = []
+    for bullet in long_bullet_list:
+        short_bullet_list.append(short_summarizer.create_short_text_summary(bullet))
 
+    return thesis, long_bullet_list, short_bullet_list, conclusion
