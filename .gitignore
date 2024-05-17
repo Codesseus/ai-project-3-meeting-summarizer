@@ -160,5 +160,8 @@ cython_debug/
 #.idea/
 
 
-# Ignore the test folder
+# Ignore the test folder and the env files
 test/
+*.env
+*test_*
+*_test_*
