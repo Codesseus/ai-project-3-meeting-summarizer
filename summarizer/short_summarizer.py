@@ -1,13 +1,13 @@
-from utils import api_utils
-from properties import chat_gpt_properties
+from .utils.api_utils import *
+from .properties.chat_gpt_properties import *
 
 from langchain_openai import ChatOpenAI
 from langchain import PromptTemplate
 from langchain.chains import LLMChain
 
-OPENAI_MODEL = api_utils.get_chat_gpt_version()
-OPENAI_API_KEY = api_utils.load_chat_gpt_api_enviroment()
-SUMMARY_TEMP = chat_gpt_properties.DEFAULT_TEMPERATURE
+OPENAI_MODEL = get_chat_gpt_version()
+OPENAI_API_KEY = load_chat_gpt_api_enviroment()
+SUMMARY_TEMP = DEFAULT_TEMPERATURE
 
 def create_short_text_summary(summary_text):
     llm_short_summary = ChatOpenAI(openai_api_key=OPENAI_API_KEY, model_name=OPENAI_MODEL, temperature=SUMMARY_TEMP)
