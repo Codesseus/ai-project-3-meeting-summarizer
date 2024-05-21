@@ -1,0 +1,29 @@
+.
++---.vscode
++---model
++---Project_3_Research
+¦   +---Resources
+¦   ¦   +---Output_Audio
+¦   ¦   +---Output_Text
+¦   ¦   +---Source_Video
+¦   +---streamlit
+¦       +---pages
++---resources
+¦   +---Output_Summary_Audio
+¦   +---Output_Sum_BP
+¦   +---Output_Text
++---streamlit_app_code_moved_inside
+¦   +---properties
+¦   ¦   +---__pycache__
+¦   +---uploads
+¦   +---utils
+¦   ¦   +---__pycache__
+¦   +---__pycache__
++---summarizer
+¦   +---properties
+¦   ¦   +---__pycache__
+¦   +---utils
+¦   ¦   +---__pycache__
+¦   +---__pycache__
++---uploads
++---__pycache__
