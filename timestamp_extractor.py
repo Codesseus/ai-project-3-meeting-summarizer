@@ -18,29 +18,25 @@ Instructions:
 example:
 from timestamp_extractor import process_summary
 
-summary_text =
+summary_text ='''
 - Bullet point 1
 - Bullet point 2
 - Bullet point 3
+'''
 
-content_text =
+content_text ='''
 [00:00:00] Line 1
 [00:00:10] Line 2
 [00:00:20] Line 3
+'''
 
 process_summary(summary_text, content_text)
 _______________________________________________________________________________
 
 expected output:
-The closest match(es) to '- Bullet point 1' in summary_text is:
-[Timestamp A] is equivalent to [Seconds A] seconds.
-
-The closest match(es) to '- Bullet point 2' in summary_text is:
-[Timestamp B] is equivalent to [Seconds B] seconds.
-
-The closest match(es) to '- Bullet point 3' in summary_text is:
-[Timestamp C] is equivalent to [Seconds C] seconds.
-
+13
+46
+133
 """
 
 import re
@@ -59,7 +55,7 @@ def process_summary(summary_text, content_text):
     bullet_points = []
     for line in summary_text.split('\n'):
         if line.startswith('- '):
-            cleaned_line = re.sub(r'[-,\.]+', '', line.strip())
+            cleaned_line = line[2:].strip()  # Remove '- ' and any leading/trailing spaces
             bullet_points.append(cleaned_line)
 
     # Tokenize the lines from content text
@@ -81,27 +77,43 @@ def process_summary(summary_text, content_text):
         total_seconds = hours * 3600 + minutes * 60 + seconds
         return total_seconds
 
+    # List to store the seconds
+    seconds_list = []
+
     # Iterate over all closest matches for each bullet point
     for j, bullet_point_embedding in enumerate(bullet_point_embeddings):
-        closest_match_indices = []
+        closest_match_index = None
         highest_similarity = -1
 
-        # Find all closest matches
+        # Find the closest match
         for i, line_embedding in enumerate(line_embeddings):
             similarity = np.dot(bullet_point_embedding, line_embedding) / (np.linalg.norm(bullet_point_embedding) * np.linalg.norm(line_embedding))
             if similarity > highest_similarity:
                 highest_similarity = similarity
-                closest_match_indices = [i]
-            elif similarity == highest_similarity:
-                closest_match_indices.append(i)
+                closest_match_index = i
 
-        # Convert timestamps to seconds for all closest matches
-        if closest_match_indices:
-            print(f"The closest match(es) to '{bullet_points[j]}' in file1_contents is:")
-            for idx in closest_match_indices:
-                timestamp = lines_with_timestamps[idx].split(']')[0] + ']'
-                seconds = timestamp_to_seconds(timestamp)
-                print(f"{timestamp} is equivalent to {seconds} seconds.")
-            print()
+        # Convert timestamp to seconds for the closest match
+        if closest_match_index is not None:
+            timestamp = lines_with_timestamps[closest_match_index].split(']')[0] + ']'
+            seconds = timestamp_to_seconds(timestamp)
+            seconds_list.append(str(seconds))
         else:
-            print(f"No close match found for '{bullet_points[j]}' in file1_contents.")
+            seconds_list.append("No match found")
+
+    return seconds_list
+
+# Example usage:
+summary_text = """
+- Bullet point 1
+- Bullet point 2
+- Bullet point 3
+"""
+
+content_text = """
+[00:00:00] Line 1
+[00:00:10] Line 2
+[00:00:20] Line 3
+"""
+
+result = process_summary(summary_text, content_text)
+print(result)
