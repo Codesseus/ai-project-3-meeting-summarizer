@@ -54,8 +54,8 @@ def process_summary(summary_text, content_text):
     # Preprocess the summary text to extract bullet points
     bullet_points = []
     for line in summary_text.split('\n'):
-        if line.startswith('- '):
-            cleaned_line = line[2:].strip()  # Remove '- ' and any leading/trailing spaces
+        cleaned_line = line.strip()  # Remove any leading/trailing spaces
+        if cleaned_line:
             bullet_points.append(cleaned_line)
 
     # Tokenize the lines from content text
@@ -101,19 +101,3 @@ def process_summary(summary_text, content_text):
             seconds_list.append("No match found")
 
     return seconds_list
-
-# Example usage:
-summary_text = """
-- Bullet point 1
-- Bullet point 2
-- Bullet point 3
-"""
-
-content_text = """
-[00:00:00] Line 1
-[00:00:10] Line 2
-[00:00:20] Line 3
-"""
-
-result = process_summary(summary_text, content_text)
-print(result)
