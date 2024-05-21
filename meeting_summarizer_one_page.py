@@ -29,15 +29,6 @@ st.write("""# Welcome to Meeting Summarizer
          Select Meeting Video file to upload. The transcribed and summarized for your review."
          """)
 
-def play_from_time(audio_file, start_time):
-  # Load audio
-  y, sr = librosa.load(audio_file)
-
-  # Extract portion from start_time onwards
-  audio_segment = y[int(start_time*sr):]
-
-  # Play audio segment
-  sd.play(audio_segment, sr)
 
 container_1 = st.empty()
 with container_1:
@@ -86,8 +77,8 @@ if st.button("Transcribe Uploaded Video"):
         thesis, long_bullet_list, short_bullet_list, conclusion = create_transcript_summary(text_with_timestamps)
 
         # Insert blank line as first bullet point
-        short_bullet_list.insert(0, "")
-        long_bullet_list.insert(0, "")
+        short_bullet_list.insert(0, "Please select...")
+        long_bullet_list.insert(0, "Please select...")
 
         #Save bullet points in session state
         st.session_state["thesis"] = thesis
@@ -99,7 +90,7 @@ if st.button("Transcribe Uploaded Video"):
 # Display Summary
 if 'thesis' in st.session_state:
     summary = st.session_state["thesis"]
-    st.write(f"##### Summary: {summary}")
+    st.write(f"###### Summary: {summary}")
 
 
 #Use cached bullet points if they exist
@@ -133,7 +124,7 @@ if index:
             st.video(video_file, start_time=int(time_offsets[0]))
 
     with col2:
-        if st.button("Listen to More"):
+        if st.button("Listen More"):
             audio_file = st.session_state["video_file"]
 
             # Get the content text and summary text from session
