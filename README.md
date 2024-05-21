@@ -1,6 +1,38 @@
 # ai-project-3-meeting-summarizer
 
-Tree
+The meeting summarizer is a web-based streamlit application that can quickly and conviently summarize any video file into a digestible summary. 
+
+When a user uploads a video file the application creates a thesis paragraph about that video (i.e. it summarizes what the video was about as a whole). It also creates several bullet points that give more indepth detail about the main topics of the video. The application sometimes includes a conclusion that summarizes the content of the video. A user can select one of the bullet points to get a longer summary of that bullet point, get the audio from the video associated with that bullet point, or jump to the location in the video that that bullet points corresponds to.
+
+Using this application a user can quickly stay informed on meetings, or can learn the major points of any informational video.
+
+## Technology Used:
+- Streamlit
+- Chatgpt 4.0 turbo (https://chatgpt.com/)
+- Whisper
+- Sentence Transformer: bert-base-nli-mean-tokens (https://www.sbert.net/)
+
+## Install and run
+Option A:
+1. Go to ______ and run the hosted version.
+2. If you want to run the code on its own or the hosted version is down then follow the steps in option B.
+
+Option B:
+1. Clone repo from github (https://github.com/Codesseus/ai-project-3-meeting-summarizer)
+2. Update python to at least version 3.12.3
+3. run the following pip installs on terminal in your conda enviroment:
+    - pip install streamlit
+    - pip install numpy
+    - pip install nltk
+    - pip install sentence-transformers
+    - pip install langchain
+    - pip install openai langchain-openai
+4. Set up enviroment keys either through windows path variables, or create a "api_keys.env" file with a variable named "OPENAI_API_KEY" located at "./AI-PROJECT-3-MEETING-SUMMARIZER/summarizer"
+5. In your terminal window, in the "AI-PROJECT-3-MEETING-SUMMARIZER" folder type:
+    - ```streamlit run meeting_summarizer_one_page.py --server.enableXsrfProtection false```
+
+## File Tree
+```
 .
 │   find_closest_match.py
 │   find_closest_match_b.py
@@ -113,11 +145,7 @@ Tree
 ├───uploads
 │       Example_1.mp3
 │       Example_1.mp4
-
-## Technology Used:
-
-streamlit
-sounddevice
+```
 
 ## Works cited:
-[1]: How to import a module from a different directory. https://www.geeksforgeeks.org/python-import-module-from-different-directory/
+[^1]: How to import a module from a different directory. https://www.geeksforgeeks.org/python-import-module-from-different-directory/
