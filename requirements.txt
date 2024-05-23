@@ -1,4 +1,3 @@
-re
 nltk
 python-dotenv
 openai
