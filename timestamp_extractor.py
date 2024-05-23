@@ -78,10 +78,10 @@ def process_summary(summary_text, content_text):
         return total_seconds
 
     # List to store the seconds
-    seconds_list = []
+    results = []
 
-    # Iterate over all closest matches for each bullet point
-    for j, bullet_point_embedding in enumerate(bullet_point_embeddings):
+    # Iterate over all bullet points and find the closest match in order
+    for bullet_point_embedding in bullet_point_embeddings:
         closest_match_index = None
         highest_similarity = -1
 
@@ -96,8 +96,14 @@ def process_summary(summary_text, content_text):
         if closest_match_index is not None:
             timestamp = lines_with_timestamps[closest_match_index].split(']')[0] + ']'
             seconds = timestamp_to_seconds(timestamp)
-            seconds_list.append(str(seconds))
+            results.append((seconds, closest_match_index))
         else:
-            seconds_list.append("No match found")
+            results.append((float('inf'), -1))  # Use infinity for unmatched bullet points to handle later
+
+    # Sort results by the original order of lines in content_text
+    results.sort(key=lambda x: x[1])
+
+    # Extract only the seconds values, ignoring unmatched bullet points
+    seconds_list = [str(seconds) if index != -1 else "No match found" for seconds, index in results]
 
     return seconds_list
