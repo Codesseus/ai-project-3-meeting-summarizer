@@ -11,7 +11,8 @@ from summarizer.text_summarizer import create_transcript_summary
 from timestamp_extractor import process_summary
 import os
 
-# Set up the page layout
+
+ 
 st.set_page_config(
     layout="wide",
     page_title="Meeting Summarizer",

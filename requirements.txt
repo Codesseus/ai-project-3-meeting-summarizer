@@ -1,0 +1,10 @@
+nltk
+python-dotenv
+openai
+moviepy
+datetime
+langchain_openai
+langchain
+sentence-transformers
+
+ 
