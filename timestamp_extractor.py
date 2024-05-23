@@ -44,32 +44,19 @@ import nltk
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-# Download the necessary NLTK resources
-nltk.download('punkt')
-
 def process_summary(summary_text, content_text):
     # Preprocess the content text to extract lines and timestamps
     lines_with_timestamps = content_text.strip().split('\n')
 
     # Preprocess the summary text to extract bullet points
-    bullet_points = []
-    for line in summary_text.split('\n'):
-        cleaned_line = line.strip()  # Remove any leading/trailing spaces
-        if cleaned_line:
-            bullet_points.append(cleaned_line)
-
-    # Tokenize the lines from content text
-    tokenized_lines = [nltk.word_tokenize(line) for line in lines_with_timestamps]
-
-    # Convert tokenized lines to strings
-    line_strs = [' '.join(line) for line in tokenized_lines]
+    bullet_points = [line.strip() for line in summary_text.split('\n') if line.strip()]
 
     # Initialize the Sentence Transformer model
-    model = SentenceTransformer('bert-base-nli-mean-tokens')
+    model = SentenceTransformer('all-MiniLM-L6-v2')
 
     # Compute embeddings for bullet points and lines
     bullet_point_embeddings = model.encode(bullet_points)
-    line_embeddings = model.encode(line_strs)
+    line_embeddings = model.encode(lines_with_timestamps)
 
     # Function to convert timestamp to seconds
     def timestamp_to_seconds(timestamp):
@@ -80,30 +67,31 @@ def process_summary(summary_text, content_text):
     # List to store the seconds
     results = []
 
-    # Iterate over all bullet points and find the closest match in order
+    # Iterate over all bullet points and find the closest match
     for bullet_point_embedding in bullet_point_embeddings:
         closest_match_index = None
-        highest_similarity = -1
+        max_similarity = -1
 
-        # Find the closest match
-        for i, line_embedding in enumerate(line_embeddings):
-            similarity = np.dot(bullet_point_embedding, line_embedding) / (np.linalg.norm(bullet_point_embedding) * np.linalg.norm(line_embedding))
-            if similarity > highest_similarity:
-                highest_similarity = similarity
+        # Iterate over neighboring lines using a sliding window
+        for i in range(len(line_embeddings) - 1):
+            concatenated_lines = lines_with_timestamps[i] + " " + lines_with_timestamps[i + 1]
+            concatenated_embedding = model.encode(concatenated_lines)
+            similarity = np.dot(bullet_point_embedding, concatenated_embedding) / (
+                        np.linalg.norm(bullet_point_embedding) * np.linalg.norm(concatenated_embedding))
+
+            # Update the closest match if similarity is higher
+            if similarity > max_similarity:
+                max_similarity = similarity
                 closest_match_index = i
 
         # Convert timestamp to seconds for the closest match
         if closest_match_index is not None:
             timestamp = lines_with_timestamps[closest_match_index].split(']')[0] + ']'
             seconds = timestamp_to_seconds(timestamp)
-            results.append((seconds, closest_match_index))
+            results.append(seconds)
         else:
-            results.append((float('inf'), -1))  # Use infinity for unmatched bullet points to handle later
+            results.append(float('inf'))  # Use infinity for unmatched bullet points to handle later
 
-    # Sort results by the original order of lines in content_text
-    results.sort(key=lambda x: x[1])
-
-    # Extract only the seconds values, ignoring unmatched bullet points
-    seconds_list = [str(seconds) if index != -1 else "No match found" for seconds, index in results]
+    seconds_list = results
 
     return seconds_list
