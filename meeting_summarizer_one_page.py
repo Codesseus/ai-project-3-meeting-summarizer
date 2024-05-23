@@ -1,5 +1,4 @@
 # Run command
-#streamlit run meeting_summarizer_one_page.py --server.enableCORS=false
 #streamlit run meeting_summarizer_one_page.py --server.enableXsrfProtection false
 
 import streamlit as st
@@ -9,12 +8,14 @@ from transcription_functions import transcribe_video_to_text
 
 #Summarization Model - Provides summary, short and long bullet points
 from summarizer.text_summarizer import create_transcript_summary
+from timestamp_extractor import process_summary
 import os
 
+
+ 
 st.set_page_config(
     layout="wide",
     page_title="Meeting Summarizer",
-    #page_icon="👋",
 )
 
 #Initialize Variables
@@ -29,29 +30,14 @@ st.write("""# Welcome to Meeting Summarizer
          Select Meeting Video file to upload. The transcribed and summarized for your review."
          """)
 
-def play_from_time(audio_file, start_time):
-  # Load audio
-  y, sr = librosa.load(audio_file)
-
-  # Extract portion from start_time onwards
-  audio_segment = y[int(start_time*sr):]
-
-  # Play audio segment
-  sd.play(audio_segment, sr)
 
 container_1 = st.empty()
 with container_1:
     uploaded_file = st.file_uploader("Choose a file", accept_multiple_files=False, type=["mp4"])
-    # Use if able to get uloading and loading in different folders to work
-    #uploaded_file = upload_and_redirect_file(file_name, videoFolder)
-
 
 if uploaded_file is not None:  
     st.write("File uploaded. Click Transcribe Uploaded Video to begin processing.")
     file_name = uploaded_file.name
-    #Debug file_details = {"Filename": uploaded_file.name, "FileType": uploaded_file.type, "FileSize": uploaded_file.size}
-    #Debug st.write(f"#### Video File Received :blue[{file_name}]")
-    #Debug st.write(file_details)
 
     # Specify the folder where you want to save the uploaded file
     save_folder = "uploads"
@@ -92,8 +78,8 @@ if st.button("Transcribe Uploaded Video"):
         thesis, long_bullet_list, short_bullet_list, conclusion = create_transcript_summary(text_with_timestamps)
 
         # Insert blank line as first bullet point
-        short_bullet_list.insert(0, "")
-        long_bullet_list.insert(0, "")
+        short_bullet_list.insert(0, "Please select...")
+        long_bullet_list.insert(0, "Please select...")
 
         #Save bullet points in session state
         st.session_state["thesis"] = thesis
@@ -105,7 +91,7 @@ if st.button("Transcribe Uploaded Video"):
 # Display Summary
 if 'thesis' in st.session_state:
     summary = st.session_state["thesis"]
-    st.write(f"##### Summary: {summary}")
+    st.write(f"###### Summary: {summary}")
 
 
 #Use cached bullet points if they exist
@@ -113,13 +99,11 @@ if 'bullet_points' in st.session_state:
     bullet_points = st.session_state["bullet_points"]
 
 # Display the bullet points
-#selected_bullet = st.selectbox("Select a bullet point to learn more:", bullet_points)
 index = st.selectbox("Select Bullet Point", range(len(bullet_points)), format_func=lambda x: bullet_points[x])
         
 # Show Options when a bullet point is selected
 if index:
     # Display the selected bullet point (no need)
-    #st.write(f"You selected: {bullet_points[index]}")
         
     # Show the bullet points in a single row
     col1, col2, col3 = st.columns(3)        
@@ -129,13 +113,31 @@ if index:
             video_file = st.session_state["video_file"]
             st.title('Play Portion of Video')
 
-            # Display the video player with the specified start and end times
-            st.video(video_file, start_time=25, end_time=45)
+            # Get the content text and summary text from session
+            content_text = st.session_state["text_with_timestamps"]
+            summary_text = st.session_state["bullet_points_long"][index]
+
+            #Get playback time offset   
+            time_offsets = process_summary(summary_text, content_text)
+
+            #st.write(f"Time Offsets: {time_offsets[0]} seconds.")
+            # Display the video player with the specified start time
+            st.video(video_file, start_time=int(time_offsets[0]))
 
     with col2:
-        if st.button("Listen to More"):
+        if st.button("Listen More"):
             audio_file = st.session_state["video_file"]
-            st.audio(audio_file, start_time=45)
+
+            # Get the content text and summary text from session
+            content_text = st.session_state["text_with_timestamps"]
+            summary_text = st.session_state["bullet_points_long"][index]
+
+            #Get playback time offset
+            time_offsets = process_summary(summary_text, content_text)
+
+            #st.write(f"Time Offsets: {time_offsets[0]} seconds.")
+            # Play the audio with the specified start time
+            st.audio(audio_file, start_time=int(time_offsets[0]))
 
     with col3:
         if st.button("Read More"):
