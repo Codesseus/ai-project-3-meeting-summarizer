@@ -11,10 +11,6 @@ from transcription_functions import transcribe_video_to_text
 from summarizer.text_summarizer import create_transcript_summary
 import os
 
-# Used for Audio Playback
-import sounddevice as sd
-import librosa
- 
 st.set_page_config(
     layout="wide",
     page_title="Meeting Summarizer",
