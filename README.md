@@ -15,7 +15,7 @@ Using this application a user can quickly stay informed on meetings, or can lear
 
 ## Install and Run
 Option A:
-1. Go to ______ and run the hosted version.
+1. Go to https://ai-project-3-meeting-summarizer-rttvfhl39dwghbbhc4ywan.streamlit.app/ and run the hosted version.
 2. If you want to run the code on its own or the hosted version is down then follow the steps in option B or C.
 
 Option B:
@@ -62,6 +62,7 @@ Option C:
 │   Project_3_Tokenize_SumTrans.ipynb
 │   Project_3_Tokenize_Transcription.ipynb
 │   README.md
+│   requirements.txt
 │   timestamp_extractor.py
 │   transcription_functions.py
 │   tree.txt
@@ -71,7 +72,6 @@ Option C:
 │       launch.json
 │       settings.json
 │
-├───model
 ├───Project_3_Research
 │   │   Project 3 ideas.docx
 │   │   Project_3_streamlit_spike.py
@@ -96,14 +96,6 @@ Option C:
 │   │           Example_3.mp4
 │   │
 │   └───streamlit
-│       │   MeetingReview.py
-│       │   README.md
-│       │   requirements.txt
-│       │
-│       └───pages
-│               2_📚_Projects.py
-│               3_💬_Contact.py
-│
 ├───resources
 │   ├───Output_Summary_Audio
 │   │       summary2_audio.mp3
@@ -121,27 +113,6 @@ Option C:
 │   │
 │   └───Output_Text
 │           Example_1_nTS_Token.json
-│
-├───streamlit_app_code_moved_inside
-│   │   config.toml
-│   │   launch.json
-│   │   long_summarizer.py
-│   │   meeting.py
-│   │   meeting_summarizer_one_page.py
-│   │   short_summarizer.py
-│   │   text_summarizer.py
-│   │   transcription_functions.py
-│   │
-│   ├───properties
-│   │       chat_gpt_properties.py
-│   │
-│   ├───uploads
-│   │       Example_1.mp3
-│   │       Example_1.mp4
-│   │
-│   ├───utils
-│   │   │   api_utils.py
-│   │   │   transcript_utilities.py
 │
 ├───summarizer
 │   │   long_summarizer.py
