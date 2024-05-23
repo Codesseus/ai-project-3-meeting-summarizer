@@ -135,8 +135,8 @@ Option C:
 ```
 
 ## Works Cited:
-[^1]: How to import a module from a different directory. https://www.geeksforgeeks.org/python-import-module-from-different-directory/
+[1]: How to import a module from a different directory. https://www.geeksforgeeks.org/python-import-module-from-different-directory/
 
-[^2]: Perplexity AI, used to lookup information to construct the timestamp extractor. https://www.perplexity.ai/
+[2]: Perplexity AI, used to lookup information to construct the timestamp extractor. https://www.perplexity.ai/
 
-[^3]: ChatGPT, used to lookup general information for how to code sections of the codebase. https://chatgpt.com/
+[3]: ChatGPT, used to lookup general information for how to code sections of the codebase. https://chatgpt.com/
