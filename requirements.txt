@@ -1,11 +1,11 @@
 nltk
 python-dotenv
 openai
-moviepy.editor
+moviepy
 datetime
 langchain_openai
 langchain
-langchain.chains
+langchain
 sentence-transformers
 
  
