@@ -10,7 +10,7 @@ Using this application a user can quickly stay informed on meetings, or can lear
 - Streamlit (https://streamlit.io/)
 - Chatgpt 4.0 turbo (https://chatgpt.com/)
 - Whisper (https://openai.com/index/whisper/)
-- Sentence Transformer: bert-base-nli-mean-tokens (https://www.sbert.net/)
+- Sentence Transformer: bert-base-nli-mean-tokens, all-MiniLM-L6-v2
 - Google Collab
 
 ## Install and Run
